@@ -1,0 +1,14 @@
+# Node dependencies
+backend/node_modules/
+npm-debug.log
+
+# Environment variables
+.env
+
+# Old local database files (just in case they are lingering)
+*.sqlite
+*.db
+
+# OS generated files
+.DS_Store
+Thumbs.db

@@ -20,9 +20,6 @@ const metricWriteReduction = document.getElementById('metric-write-reduction');
 
 // Visualizer DOM elements
 const debugNodeIndicator = document.getElementById('debug-node-indicator');
-const debugCacheKey = document.getElementById('debug-cache-key');
-const debugHash = document.getElementById('debug-hash');
-const debugStatus = document.getElementById('debug-status');
 
 /**
  * Append message logs to the UI debugger console
@@ -253,9 +250,6 @@ async function updateRoutingDetails(prefix) {
         // Reset debug visualizer interface
         debugNodeIndicator.className = 'node-indicator-small unmapped';
         debugNodeIndicator.textContent = 'None';
-        debugCacheKey.textContent = '-';
-        debugHash.textContent = '-';
-        debugStatus.textContent = '-';
         return;
     }
 
@@ -267,11 +261,6 @@ async function updateRoutingDetails(prefix) {
         // Update node tags and styles based on selected Redis instance
         debugNodeIndicator.className = `node-indicator-small ${data.responsibleNode}`;
         debugNodeIndicator.textContent = data.responsibleNode.toUpperCase();
-        
-        debugCacheKey.textContent = data.cacheKey;
-        debugHash.textContent = data.md5Hash;
-        debugStatus.textContent = data.cached ? 'HIT (Loaded from Redis)' : 'MISS (Loaded from Postgres)';
-        debugStatus.style.color = data.cached ? 'var(--success)' : 'var(--primary)';
     } catch (err) {
         console.error('Error updating routing details:', err);
     }
@@ -309,25 +298,7 @@ async function pollMetrics() {
     }
 }
 
-/**
- * Set the current ranking mode (Basic vs Enhanced)
- */
-function setRankingMode(mode) {
-    if (mode === currentRankingMode) return;
-    
-    currentRankingMode = mode;
-    
-    document.getElementById('btn-basic-ranking').classList.toggle('active', mode === 'basic');
-    document.getElementById('btn-enhanced-ranking').classList.toggle('active', mode === 'enhanced');
-
-    logEvent(`[Formula Change] Switched sorting logic to: ${mode === 'basic' ? 'Basic (All-Time Volume)' : 'Enhanced (Recency Decay)'}`);
-    
-    // Clear search and refresh trending list
-    searchInput.value = '';
-    hideDropdown();
-    updateRoutingDetails('');
-    fetchTrending();
-}
+// Ranking toggle functions removed. Dashboard runs on recency-decay Enhanced ranking.
 
 // Helper: Escape HTML strings for XSS mitigation
 function escapeHtml(str) {
